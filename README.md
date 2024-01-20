@@ -13,12 +13,12 @@ The measures are stored in the RTC memory and are only sent via WIFI if the char
 
 - Take one sample every 15 mins.
 - WIFI connection every 6 samples = 90 minutes. Or when the supercap is over 95% (sunny hours).
-- If the supercap voltage is below 3.5V don't connect the WIFI.
+- If the supercap voltage is below 3.5V don't connect the WIFI and reduce sample period to 30 minutes.
 
 With this test setup it survives more than 24 hours taking samples and sending every 90 minutes without any sun. When the sun is back in a couple of minutes the supercap is fully charged.
 
 But after the tests it will be adjusted to sleep for 2 or 3 hours. It will increase the availability a lot because most of the power is consumed when it activates the WIFI.  
-In the RTC memory it can store about 1200 samples, so it can wait many hours until the sun is back and the supercap is charged again.
+In the RTC memory can store about 1200 samples, so it can wait many hours until the sun is back and the supercap is charged again.
 
 
 
