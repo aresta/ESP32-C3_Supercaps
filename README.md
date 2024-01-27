@@ -9,6 +9,13 @@ The measures are stored in the RTC memory and are only sent via WIFI if the char
 
 <img src="img/ESP32-C3_supercaps.jpg" alt="ESP32-C3 supercaps" style="width:400px;"/>
 
+Breadboard circuit
+
+<img src="img/ESP32-C3_supercaps_sch.jpg" alt="ESP32-C3 supercaps" style="width:600px;"/>
+
+The schematic
+
+
 ### Current time schedule:
 
 - Take one sample every 15 mins.

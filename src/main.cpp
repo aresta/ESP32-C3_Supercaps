@@ -22,8 +22,8 @@ int32_t init_time = 0;
 #define LONG_SLEEP 30
 RTC_DATA_ATTR Sample    samples[ max_samples];
 RTC_DATA_ATTR uint16_t  sample_count = 0;
-RTC_DATA_ATTR uint8_t   sleep_mins = SHORT_SLEEP;
-RTC_DATA_ATTR uint8_t   samples_to_send = 6;
+RTC_DATA_ATTR uint16_t  sleep_mins = SHORT_SLEEP;
+RTC_DATA_ATTR uint8_t   samples_to_send = 8;
 
 void setup() {
   setCpuFrequencyMhz(10);
@@ -73,7 +73,7 @@ void loop() {
   char temp[10], hum[10], pres[10], volts[10], sleep_mins_[10];
   sample_count++;
   if( volts_perc >= 195 || 
-      (sample_count >= samples_to_send && volts_perc >= 170)){
+      (sample_count >= samples_to_send /* && volts_perc >= 170 */)){
     setCpuFrequencyMhz(80);
     connectWifi();
     // NTPConnect();
@@ -95,11 +95,11 @@ void loop() {
     WiFi.mode( WIFI_OFF);    // Switch WiFi off
   }
 
-  if( volts_perc < 110){
-    sleep_mins = LONG_SLEEP;
-  } else {
-    sleep_mins = SHORT_SLEEP;
-  }
+  // if( volts_perc < 110){
+  //   sleep_mins = LONG_SLEEP;
+  // } else {
+  //   sleep_mins = SHORT_SLEEP;
+  // }
 
   // delay( 1*60*1000);
   esp_deep_sleep(( sleep_mins*60*1000 - (millis() - init_time))* 1000); // microseconds to sleep
