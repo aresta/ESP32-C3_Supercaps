@@ -72,8 +72,8 @@ void loop() {
 
   char temp[10], hum[10], pres[10], volts[10], sleep_mins_[10];
   sample_count++;
-  if( volts_perc >= 195 || 
-      (sample_count >= samples_to_send /* && volts_perc >= 170 */)){
+  if( volts_perc >= (4.94-2.5)*80 ||   // above 4.94V send always
+      sample_count >= samples_to_send ){
     setCpuFrequencyMhz(80);
     connectWifi();
     // NTPConnect();
@@ -95,11 +95,16 @@ void loop() {
     WiFi.mode( WIFI_OFF);    // Switch WiFi off
   }
 
-  // if( volts_perc < 110){
-  //   sleep_mins = LONG_SLEEP;
-  // } else {
-  //   sleep_mins = SHORT_SLEEP;
-  // }
+  if( volts_perc < (3.8-2.5)*80){ // below 3.8V
+    samples_to_send = 16;
+  } else {
+    samples_to_send = 8;
+  }
+  if( volts_perc < (3.5-2.5)*80){  // below 3.5V
+    sleep_mins = LONG_SLEEP;
+  } else {
+    sleep_mins = SHORT_SLEEP;
+  }
 
   // delay( 1*60*1000);
   esp_deep_sleep(( sleep_mins*60*1000 - (millis() - init_time))* 1000); // microseconds to sleep
