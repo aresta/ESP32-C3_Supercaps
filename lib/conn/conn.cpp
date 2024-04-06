@@ -8,27 +8,29 @@ IPAddress dns( DNS);
 IPAddress gateway( GATEWAY);
 IPAddress subnet( SUBNET);
 
-void connectWifi()
+uint8_t connectWifi()
 {
   WiFi.useStaticBuffers( true);
   WiFi.mode( WIFI_STA);
   if (!WiFi.config( ip, gateway, subnet, dns)) {
     LOG("Failed to configure WIFI");
+    return ERR_CONF_WIFI;
   }
   WiFi.begin( WIFI_SSID, WIFI_PASSWORD); 
   LOG2( "Attempting to connect to SSID: ", WIFI_SSID)
   while (WiFi.status() != WL_CONNECTED){
-    LOG(".")
-    delay(500);
+    LOG(".");
+    delay(400);
   }
+  if( WiFi.status() != WL_CONNECTED) return ERR_CONNECTING_WIFI;
   LOG("")
   LOG("WiFi connected")
-  LOG("IP address: ")
-  LOG( WiFi.localIP())
+  LOG2("IP address: ", WiFi.localIP())
+  return CONN_OK;
 }
 
 
-void connectAWS( WiFiClientSecure& wifiClient, PubSubClient& awsClient)
+uint8_t connectAWS( WiFiClientSecure& wifiClient, PubSubClient& awsClient)
 {
   wifiClient.setCACert( AWS_CERT_CA); // TODO: move to setup()
   wifiClient.setCertificate( AWS_CERT_CRT); // for client verification
@@ -37,22 +39,24 @@ void connectAWS( WiFiClientSecure& wifiClient, PubSubClient& awsClient)
   awsClient.setServer( AWS_MQTT_HOST, 8883);
   // client.setCallback( messageReceived);
  
-  Serial.println("Connecting to AWS IOT");
+  LOG("Connecting to AWS IOT");
   
-  while ( !awsClient.connect( THINGNAME)) {
+  for( int i=0; i < 5; i++){ // try 5 times
+    if( awsClient.connect( THINGNAME)) break;
     char err_buf[256];
     wifiClient.lastError( err_buf, sizeof( err_buf));
     LOG2( err_buf, awsClient.state())
-    delay(800);
+    delay(400);
   }
  
   if ( !awsClient.connected()) {
     LOG("AWS IoT Timeout!")
-    return;
+    return ERR_CONNECTING_AWS;
   }
   // Subscribe to a topic
   // client.subscribe(AWS_IOT_SUBSCRIBE_TOPIC);
   LOG("AWS IoT Connected!")
+  return CONN_OK;
 }
 
 

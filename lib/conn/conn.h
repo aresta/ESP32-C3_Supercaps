@@ -5,8 +5,13 @@
 
 const int8_t TIME_ZONE = 1;
 
-void connectWifi();
-void connectAWS( WiFiClientSecure& wifiClient, PubSubClient& awsClient);
+/// @brief 
+/// @return error code
+uint8_t connectWifi();
+
+/// @brief 
+/// @return error code
+uint8_t connectAWS( WiFiClientSecure& wifiClient, PubSubClient& awsClient);
 // void NTPConnect();
 
 #endif
