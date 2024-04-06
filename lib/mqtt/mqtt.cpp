@@ -33,11 +33,8 @@ u_int8_t send_iot_data( const char volts[], const char hum[], const char pres[],
 
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer);
-  bool ok = false;
-  for( int i=0; i<5; i++){ // try 5 times
-    ok = awsClient.publish( AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
-    if( ok) break;
-  }
+  bool ok = awsClient.publish( AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
+  delay(150);
   if( !ok) return ERR_SENDING_AWS;
   return CONN_OK;
 }
