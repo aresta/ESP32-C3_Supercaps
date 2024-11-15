@@ -36,7 +36,7 @@ With this test setup it survives more than 24 hours taking samples and sending e
 But after the tests it will be adjusted to sleep for 2 or 3 hours. It will increase the availability a lot because most of the power is consumed when it activates the WIFI.  
 In the RTC memory can store about 1200 samples, so it can wait many hours until the sun is back and the supercap is charged again.
 
-The system is running for about one year now. Some average statistics of the data collected the last months:
+The system is running for about one year now. Some average statistics of the data collected during the last three months:
 
 <img src="img/plot.jpg" alt="ESP32-C3 supercaps" style="width:600px;"/>
 
