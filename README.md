@@ -17,9 +17,13 @@ The measures are stored in the RTC memory and are only sent via WIFI if the char
 <img src="img/ESP32-C3_supercaps_sch.jpg" alt="ESP32-C3 supercaps" style="width:600px;"/>
 
 
+### New version with the module instead of the devboard
+
+<img src="img/ESP8685_sch.jpg" alt="ESP32-C3 supercaps" style="width:600px;"/>
+
 ### PCB
 
-<img src="img/pcb.jpg" alt="ESP32-C3 supercaps" style="width:400px;"/>
+<img src="img/ESP8685_pcb.jpg" alt="ESP32-C3 supercaps" style="width:400px;"/>
 
 ## Current time schedule:
 
