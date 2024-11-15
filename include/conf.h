@@ -12,8 +12,6 @@
 #define LOG2( l1, l2) // nothing
 #endif
 
-#define VOLTS_PERC(v) ((v-2.5)*80)
-
 #define CONN_OK 0
 #define ERR_CONF_WIFI 1
 #define ERR_CONNECTING_WIFI 2

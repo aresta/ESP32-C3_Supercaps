@@ -4,7 +4,7 @@
 #include "mqtt.h"
 #include "conf.h"
 
-u_int8_t send_iot_data( const char volts[], const char hum[], const char pres[], const char temp[], const char offset_mins[], uint8_t error, PubSubClient& awsClient)
+u_int8_t send_iot_data( const char volts[], const char hum[], const char pres[], const char temp[], const char offset_mins[], uint32_t wkup_cnt, PubSubClient& awsClient)
 {
   JsonDocument doc;
   doc["temp"] = temp;
@@ -12,29 +12,30 @@ u_int8_t send_iot_data( const char volts[], const char hum[], const char pres[],
   doc["presio"] = pres;
   doc["volts"] = volts;
   doc["offset"] = offset_mins;
-  switch ( error)
-  {
-    case ERR_CONF_WIFI:
-      doc["error"] = "ERR_CONF_WIFI";
-      break;
-    case ERR_CONNECTING_WIFI:
-      doc["error"] = "ERR_CONNECTING_WIFI";
-      break;
-    case ERR_CONNECTING_AWS:
-      doc["error"] = "ERR_CONNECTING_AWS";
-      break;
-    case ERR_SENDING_AWS:
-      doc["error"] = "ERR_SENDING_AWS";
-      break;
-    default:
-      doc["error"] = "";
-      break;
-  }
+  doc["wkup_cnt"] = wkup_cnt;
+  // switch ( error)
+  // {
+  //   case ERR_CONF_WIFI:
+  //     doc["error"] = "ERR_CONF_WIFI";
+  //     break;
+  //   case ERR_CONNECTING_WIFI:
+  //     doc["error"] = "ERR_CONNECTING_WIFI";
+  //     break;
+  //   case ERR_CONNECTING_AWS:
+  //     doc["error"] = "ERR_CONNECTING_AWS";
+  //     break;
+  //   case ERR_SENDING_AWS:
+  //     doc["error"] = "ERR_SENDING_AWS";
+  //     break;
+  //   default:
+  //     doc["error"] = "";
+  //     break;
+  // }
 
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer);
   bool ok = awsClient.publish( AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
-  delay(150);
+  delay(100);
   if( !ok) return ERR_SENDING_AWS;
   return CONN_OK;
 }

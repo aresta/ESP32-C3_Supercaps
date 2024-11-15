@@ -7,16 +7,21 @@ The setup and code is very simple. The microcontroller stays in deep sleep most 
 
 The measures are stored in the RTC memory and are only sent via WIFI if the charge of the supercap is at 95% or after a defined number of hours. This way the system can run many hours without any sun.
 
+### Breadboard circuit
+
 <img src="img/ESP32-C3_supercaps.jpg" alt="ESP32-C3 supercaps" style="width:400px;"/>
 
-Breadboard circuit
+
+### The schematic
 
 <img src="img/ESP32-C3_supercaps_sch.jpg" alt="ESP32-C3 supercaps" style="width:600px;"/>
 
-The schematic
 
+### PCB
 
-### Current time schedule:
+<img src="img/pcb.jpg" alt="ESP32-C3 supercaps" style="width:400px;"/>
+
+## Current time schedule:
 
 - Take one sample every 15 mins.
 - WIFI connection every 6 samples = 90 minutes. Or when the supercap is over 95% (sunny hours).
