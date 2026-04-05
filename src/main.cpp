@@ -119,7 +119,7 @@ void loop() {
     }
   }
 
-  if( mVolts < 3600){
+  if( mVolts < 4200){
     samples_to_send = 16;
   } else {
     samples_to_send = 8;

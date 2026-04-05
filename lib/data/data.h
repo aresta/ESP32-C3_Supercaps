@@ -12,6 +12,6 @@ struct Sample {
   };
 
 const uint8_t sample_size = 2+1+1+2+1+2;
-const uint16_t max_samples = uint16_t( 7500 / sample_size); // RTC memory size is 8K
+const uint16_t max_samples = uint16_t( 7200 / sample_size); // RTC memory size is 8K
 
 #endif
