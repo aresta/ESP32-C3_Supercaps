@@ -19,7 +19,7 @@ The measures are stored in the RTC memory and are only sent via WIFI if the char
 <img src="img/ESP32-C3_supercaps_sch.jpg" alt="ESP32-C3 supercaps" style="width:600px;"/>
 
 
-### New improved version: ESP32 module and schottky diode
+### New improved version: with ESP32 module and without boost converter
 
 For the new version I designed a simple PCB and replaced the ESP32-C3 dev board by the ESP8685 WROOM module. It's still ESP32-C3 but as a module soldered to the PCB.
 
