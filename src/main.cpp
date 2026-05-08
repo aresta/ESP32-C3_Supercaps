@@ -80,7 +80,7 @@ void loop() {
 
   char temp[10], hum[10], pres[10], volts[10], sleep_mins_[10];
   sample_count++;
-  if( mVolts >= 5000 || // above this voltage send always
+  if( (mVolts >= 4900 && sample_count % 2 == 0) || // above this voltage send every second
       sample_count >= samples_to_send ){
     setCpuFrequencyMhz(80);
     err = connectWifi();
@@ -130,6 +130,6 @@ void loop() {
   //   sleep_mins = SHORT_SLEEP;
   // }
 
-  // delay( 1*60*1000);
+  // delay( 5*60*1000);
   esp_deep_sleep(( sleep_mins*60*1000 - (millis() - init_time))* 1000); // microseconds to sleep
 }
