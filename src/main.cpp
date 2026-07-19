@@ -11,8 +11,8 @@
 #include "conf.h"
 
 #define LED GPIO_NUM_8
-#define SDA_PIN 5
-#define SCL_PIN 6
+#define SDA_PIN 6
+#define SCL_PIN 5
 #define ADC_VOLT_PIN 3
 
 Adafruit_BME280 bme;
@@ -102,7 +102,7 @@ void loop() {
                      ( ( mVolts >= MVOLT_HIGH_SEND_THRESHOLD && sample_count % 2 == 0) ||
                        sample_count >= samples_to_send );
 
-  if( should_send || false) {
+  if( should_send && false) {
     setCpuFrequencyMhz( CPU_FREQ_HIGH_MHZ);
     err = connectWifi();
     if( err != CONN_OK) {
