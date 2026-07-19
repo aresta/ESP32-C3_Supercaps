@@ -18,11 +18,15 @@ uint8_t connectWifi()
   }
   WiFi.begin( WIFI_SSID, WIFI_PASSWORD); 
   LOG2( "Attempting to connect to SSID: ", WIFI_SSID)
+  uint32_t t0 = millis();
   while (WiFi.status() != WL_CONNECTED){
+    if (millis() - t0 >= WIFI_CONNECT_TIMEOUT_MS) {
+      LOG("WiFi connect timeout")
+      return ERR_CONNECTING_WIFI;
+    }
     LOG(".");
-    delay(400);
+    delay(WIFI_RETRY_DELAY_MS);
   }
-  if( WiFi.status() != WL_CONNECTED) return ERR_CONNECTING_WIFI;
   LOG("")
   LOG("WiFi connected")
   LOG2("IP address: ", WiFi.localIP())
@@ -40,13 +44,13 @@ uint8_t connectAWS( WiFiClientSecure& wifiClient, PubSubClient& awsClient)
   // client.setCallback( messageReceived);
  
   LOG("Connecting to AWS IOT");
-  
-  for( int i=0; i < 5; i++){ // try 5 times
+   
+  for( int i=0; i < AWS_CONNECT_RETRIES; i++){
     if( awsClient.connect( THINGNAME)) break;
     char err_buf[256];
     wifiClient.lastError( err_buf, sizeof( err_buf));
     LOG2( err_buf, awsClient.state())
-    delay(400);
+    delay(AWS_CONNECT_DELAY_MS);
   }
  
   if ( !awsClient.connected()) {

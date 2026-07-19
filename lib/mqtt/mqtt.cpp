@@ -4,51 +4,22 @@
 #include "mqtt.h"
 #include "conf.h"
 
-u_int8_t send_iot_data( const char volts[], const char hum[], const char pres[], const char temp[], const char offset_mins[], uint32_t wkup_cnt, PubSubClient& awsClient)
+uint8_t send_iot_data( const Sample& sample, uint16_t offset_mins, PubSubClient& awsClient)
 {
   JsonDocument doc;
-  doc["temp"] = temp;
-  doc["hum"] = hum;
-  doc["presio"] = pres;
-  doc["volts"] = volts;
-  doc["offset"] = offset_mins;
-  doc["wkup_cnt"] = wkup_cnt;
-  // switch ( error)
-  // {
-  //   case ERR_CONF_WIFI:
-  //     doc["error"] = "ERR_CONF_WIFI";
-  //     break;
-  //   case ERR_CONNECTING_WIFI:
-  //     doc["error"] = "ERR_CONNECTING_WIFI";
-  //     break;
-  //   case ERR_CONNECTING_AWS:
-  //     doc["error"] = "ERR_CONNECTING_AWS";
-  //     break;
-  //   case ERR_SENDING_AWS:
-  //     doc["error"] = "ERR_SENDING_AWS";
-  //     break;
-  //   default:
-  //     doc["error"] = "";
-  //     break;
-  // }
+  doc["temp"]    = sample.temp / 10.0;
+  doc["hum"]     = sample.hum / 2.0;
+  doc["presio"]  = sample.pres / 2.0 + 950;
+  doc["volts"]   = sample.volts / 1000.0;
+  doc["off_min"] = offset_mins;
+  doc["seq_id"]  = sample.seq_id;
 
-  char jsonBuffer[512];
-  serializeJson(doc, jsonBuffer);
+  size_t needed = measureJson( doc) + 1;
+  char jsonBuffer[needed];
+  serializeJson( doc, jsonBuffer, needed);
+
   bool ok = awsClient.publish( AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
-  delay(100);
+  delay(MQTT_PUBLISH_DELAY_MS);
   if( !ok) return ERR_SENDING_AWS;
   return CONN_OK;
 }
-
-
-// void log_iot( int channel, const char msg[])
-// {
-//   JsonDocument doc;
-//   // doc["channel"]  = channel;
-//   doc.add( msg );
-//   char jsonBuffer[512];
-//   serializeJson(doc, jsonBuffer);
-// //   connectAWS();
-// //   client.publish( (channel == CHANNEL_ERROR ? AWS_IOT_PUBLISH_LOG_ERROR : AWS_IOT_PUBLISH_LOG_INFO), jsonBuffer);
-//   delay(200);
-// }
