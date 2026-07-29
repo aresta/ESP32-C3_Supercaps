@@ -2,7 +2,7 @@
 #define conf_
 
 // uncomment to enable log output
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #define LOG( l) { Serial.println(l);}
@@ -27,9 +27,9 @@
 #define PACK_SIZE_LOW_VOLTAGE 16
 
 // --- Voltage thresholds (millivolts) ---
-#define MVOLT_CRITICAL             3500  // below this: no WiFi, long sleep
+#define MVOLT_CRITICAL             3600  // below this: no WiFi, long sleep
 #define MVOLT_LOW_THRESHOLD        4200  // below this: larger pack size
-#define MVOLT_HIGH_SEND_THRESHOLD  4900  // above this: send every 2 samples
+#define MVOLT_HIGH_SEND_THRESHOLD  4800  // above this: send every 2 samples
 
 // --- ADC voltage divider calibration ---
 #define ADC_MULTIPLIER 2.14
@@ -44,8 +44,9 @@
 #define WIFI_RETRY_DELAY_MS        400
 #define AWS_CONNECT_RETRIES          5
 #define AWS_CONNECT_DELAY_MS       400
-#define MQTT_PUBLISH_DELAY_MS      100
+#define MQTT_PUBLISH_DELAY_MS      5
 #define AWS_DISCONNECT_DELAY_MS    120
+#define MQTT_LOOP_INTERVAL           8  // call awsClient.loop() every N samples during bulk send
 
 // --- CPU frequencies ---
 #define CPU_FREQ_LOW_MHZ  10
